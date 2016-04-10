@@ -86,9 +86,9 @@ const readSigCreateForm = `
   <fieldset class="fieldset-auto-width">
     <legend><h2>Read</h2></legend>
     Signal name:<br>
-    <input type="text" name="signame"></input><br><br>
+    <input type="text" name="signame" required></input><br><br>
     Serial string:<br>
-    <input type="text" name="serialcommand"></input><br><br>` +
+    <input type="text" name="serialcommand" required></input><br><br>` +
 	sigSelectForm + "<br><br>" +
 	`<input type="submit" value="Create">
     </fieldset>
@@ -99,9 +99,9 @@ const writeSigCreateForm = `
   <fieldset class="fieldset-auto-width">
     <legend><h2>Write</h2></legend>
     Signal name:<br>
-    <input type="text" name="signame"></input><br><br>
+    <input type="text" name="signame" required></input><br><br>
     Serial string:<br>
-    <input type="text" name="serialcommand"></input><br><br>` +
+    <input type="text" name="serialcommand" required></input><br><br>` +
 	sigSelectForm + "<br><br>" +
 	`<input type="submit" value="Create">
     </fieldset>
