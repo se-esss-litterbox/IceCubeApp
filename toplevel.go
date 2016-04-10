@@ -47,8 +47,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 	url, _ := user.LogoutURL(c, "/signedout")
 	fmt.Fprintf(w, `<h1>Welcome home, %s! (<a href="%s">sign out</a>)</h1>`, u, url)
-	fmt.Fprintf(w, readSigCreateForm)
-	fmt.Fprintf(w, writeSigCreateForm)
+	fmt.Fprintf(w, sigCreateForm)
 }
 
 func signedout(w http.ResponseWriter, r *http.Request) {
@@ -61,38 +60,56 @@ const signedoutForm = `
 <a href="/">Sign in again</a>
 `
 
-const readSigCreateForm = `
+const stylesForm = `
 <style type="text/css">
     .fieldset-auto-width {
          display: inline-block;
     }
+    ul#menu li {
+    display:inline-block;
+    }
 </style>
-<form action="/" method="post">
-  <fieldset class="fieldset-auto-width">
-    <legend><h2>New Read Signal</h2></legend>
-    Signal name:<br>
-    <input type="text" name="signame"></input><br>
-    Serial string:<br>
-    <input type="text" name="serialcommand"></input><br><br>
-    <input type="submit" value="Create">
-    </fieldset>
-</form>
 `
 
-const writeSigCreateForm = `
-<style type="text/css">
-    .fieldset-auto-width {
-         display: inline-block;
-    }
-</style>
+const sigCreateForm = stylesForm +
+	`<fieldset class="fieldset-auto-width">
+  <legend><h2>New Signal Creator</h2></legend>
+  <ul id="menu">
+  <li>` + readSigCreateForm + `</li>
+  <li>` + writeSigCreateForm + `</li>
+  </ul>
+  </fieldset>
+  `
+
+const readSigCreateForm = `
 <form action="/" method="post">
   <fieldset class="fieldset-auto-width">
-    <legend><h2>New Write Signal</h2></legend>
+    <legend><h2>Read</h2></legend>
     Signal name:<br>
-    <input type="text" name="signame"></input><br>
+    <input type="text" name="signame"></input><br><br>
     Serial string:<br>
-    <input type="text" name="serialcommand"></input><br><br>
-    <input type="submit" value="Create">
+    <input type="text" name="serialcommand"></input><br><br>` +
+	sigSelectForm + "<br><br>" +
+	`<input type="submit" value="Create">
     </fieldset>
-</form>
-`
+</form>`
+
+const writeSigCreateForm = `
+<form action="/" method="post">
+  <fieldset class="fieldset-auto-width">
+    <legend><h2>Write</h2></legend>
+    Signal name:<br>
+    <input type="text" name="signame"></input><br><br>
+    Serial string:<br>
+    <input type="text" name="serialcommand"></input><br><br>` +
+	sigSelectForm + "<br><br>" +
+	`<input type="submit" value="Create">
+    </fieldset>
+</form>`
+
+const sigSelectForm = `
+  <select name="sigtype">
+    <option value="integer">Integer</option>
+    <option value="float">Float</option>
+    <option value="string">C-style str</option>
+  </select>`
