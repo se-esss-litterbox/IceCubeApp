@@ -48,6 +48,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	url, _ := user.LogoutURL(c, "/signedout")
 	fmt.Fprintf(w, `<h1>Welcome home, %s! (<a href="%s">sign out</a>)</h1>`, u, url)
 	fmt.Fprintf(w, readSigCreateForm)
+	fmt.Fprintf(w, writeSigCreateForm)
 }
 
 func signedout(w http.ResponseWriter, r *http.Request) {
@@ -68,10 +69,28 @@ const readSigCreateForm = `
 </style>
 <form action="/" method="post">
   <fieldset class="fieldset-auto-width">
-    <legend>New Read Signal</legend>
+    <legend><h2>New Read Signal</h2></legend>
     Signal name:<br>
-    <input type="text" name="signame"></input><br><br>
-    Serial command string:<br>
+    <input type="text" name="signame"></input><br>
+    Serial string:<br>
+    <input type="text" name="serialcommand"></input><br><br>
+    <input type="submit" value="Create">
+    </fieldset>
+</form>
+`
+
+const writeSigCreateForm = `
+<style type="text/css">
+    .fieldset-auto-width {
+         display: inline-block;
+    }
+</style>
+<form action="/" method="post">
+  <fieldset class="fieldset-auto-width">
+    <legend><h2>New Write Signal</h2></legend>
+    Signal name:<br>
+    <input type="text" name="signame"></input><br>
+    Serial string:<br>
     <input type="text" name="serialcommand"></input><br><br>
     <input type="submit" value="Create">
     </fieldset>
