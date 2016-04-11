@@ -88,7 +88,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `<a href="%s">sign out</a><br>`, url)
 	fmt.Fprint(w, sigCreateForm)
 
-	if err := definedSigsTemplate.Execute(w, readSigs); err != nil {
+	if err := readSigsTemplate.Execute(w, readSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	if err := writeSigsTemplate.Execute(w, writeSigs); err != nil {
@@ -152,6 +152,17 @@ var writeSigsTemplate = template.Must(template.New("rSigs").Parse(
   {{end}}
   `))
 
+var readSigsTemplate = template.Must(template.New("wSigs").Parse(
+	`<br>
+    {{range .}}
+      get_{{.SigName}} {<br>
+      &emsp;out "{{.SerialStr}}";<br>
+      &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
+      &emsp;ExtraInput = Ignore;<br>
+      }<br>
+    {{end}}
+    `))
+
 var definedSigsTemplate = template.Must(template.New("sigs").Parse(
 	`<br>
     {{range .}}
@@ -174,6 +185,7 @@ const sigCreateForm = stylesForm +
   <li>` + writeSigCreateForm + `</li>
   </ul>
   </fieldset>
+  <br>
   `
 
 const readSigCreateForm = `
