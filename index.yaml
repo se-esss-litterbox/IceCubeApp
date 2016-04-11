@@ -15,3 +15,8 @@ indexes:
   properties:
   - name: Date
     direction: desc
+
+- kind: ReadSig
+  ancestor: yes
+  properties:
+  - name: SigName

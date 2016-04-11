@@ -58,6 +58,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "text/html; charset=utf-8")
 	c := appengine.NewContext(r)
 	u := user.Current(c)
+	// Only allowed to proceed when signed in
 	if u == nil {
 		url, err := user.LoginURL(c, r.URL.String())
 		if err != nil {
@@ -68,7 +69,8 @@ func home(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusFound)
 		return
 	}
-	q := datastore.NewQuery("ReadSig").Ancestor(iceCubeKey(c)).Order("-Date").Limit(10)
+
+	q := datastore.NewQuery("ReadSig").Ancestor(iceCubeKey(c)).Order("SigName").Limit(10)
 	readSigs := make([]ReadSig, 0, 10)
 	if _, err := q.GetAll(c, &readSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
