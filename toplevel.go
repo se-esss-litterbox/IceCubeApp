@@ -77,12 +77,23 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	q = datastore.NewQuery("WriteSig").Ancestor(iceCubeKey(c)).Order("SigName").Limit(10)
+	writeSigs := make([]WriteSig, 0, 10)
+	if _, err := q.GetAll(c, &writeSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	url, _ := user.LogoutURL(c, "/signedout")
 	fmt.Fprintf(w, `<a href="%s">sign out</a><br>`, url)
+	fmt.Fprint(w, sigCreateForm)
+
 	if err := definedSigsTemplate.Execute(w, readSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	//fmt.Fprintf(w, sigCreateForm)
+	if err := definedSigsTemplate.Execute(w, writeSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func createReadSig(w http.ResponseWriter, r *http.Request) {
@@ -125,11 +136,11 @@ func signedout(w http.ResponseWriter, r *http.Request) {
 }
 
 var definedSigsTemplate = template.Must(template.New("sigs").Parse(
-	sigCreateForm + `<br>
+	`<br>
     {{range .}}
-      <p><b>{{.SigName}}</b></p>
-      <p>{{.SerialStr}}</p>
-      <p>{{.DataType}}</p>
+      <b>{{.SigName}}</b>
+      {{.SerialStr}}
+      {{.DataType}}<br>
     {{end}}
     `))
 

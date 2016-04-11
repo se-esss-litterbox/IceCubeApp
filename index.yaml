@@ -20,3 +20,8 @@ indexes:
   ancestor: yes
   properties:
   - name: SigName
+
+- kind: WriteSig
+  ancestor: yes
+  properties:
+  - name: SigName
