@@ -2,16 +2,39 @@ package icecubeapp
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"appengine"
+	"appengine/datastore"
 	"appengine/user"
 )
+
+// ReadSig is a read signal
+type ReadSig struct {
+	SigName   string
+	SerialStr string
+	DataType  string
+}
+
+// WriteSig is a write signal
+type WriteSig struct {
+	SigName   string
+	SerialStr string
+	DataType  string
+}
+
+// testingKey returns the key used for all testing entries.
+func iceCubeKey(c appengine.Context) *datastore.Key {
+	return datastore.NewKey(c, "IceCube", "iceCube_testing", 0, nil)
+}
 
 func init() {
 	http.HandleFunc("/", welcome)
 	http.HandleFunc("/signedout", signedout)
 	http.HandleFunc("/home", home)
+	http.HandleFunc("/createReadSig", createReadSig)
+	http.HandleFunc("/createWriteSig", createWriteSig)
 }
 
 func welcome(w http.ResponseWriter, r *http.Request) {
@@ -45,9 +68,53 @@ func home(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusFound)
 		return
 	}
+	q := datastore.NewQuery("ReadSig").Ancestor(iceCubeKey(c)).Order("-Date").Limit(10)
+	readSigs := make([]ReadSig, 0, 10)
+	if _, err := q.GetAll(c, &readSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	url, _ := user.LogoutURL(c, "/signedout")
-	fmt.Fprintf(w, `<h1>Welcome home, %s! (<a href="%s">sign out</a>)</h1>`, u, url)
-	fmt.Fprintf(w, sigCreateForm)
+	fmt.Fprintf(w, `<a href="%s">sign out</a><br>`, url)
+	if err := definedSigsTemplate.Execute(w, readSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	//fmt.Fprintf(w, sigCreateForm)
+}
+
+func createReadSig(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+
+	p := ReadSig{
+		SigName:   r.FormValue("signame"),
+		SerialStr: r.FormValue("serialcommand"),
+		DataType:  r.FormValue("sigtype"),
+	}
+	key := datastore.NewIncompleteKey(c, "ReadSig", iceCubeKey(c))
+	_, err := datastore.Put(c, key, &p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+func createWriteSig(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+
+	p := WriteSig{
+		SigName:   r.FormValue("signame"),
+		SerialStr: r.FormValue("serialcommand"),
+		DataType:  r.FormValue("sigtype"),
+	}
+	key := datastore.NewIncompleteKey(c, "WriteSig", iceCubeKey(c))
+	_, err := datastore.Put(c, key, &p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func signedout(w http.ResponseWriter, r *http.Request) {
@@ -55,20 +122,18 @@ func signedout(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, signedoutForm)
 }
 
+var definedSigsTemplate = template.Must(template.New("sigs").Parse(
+	sigCreateForm + `<br>
+    {{range .}}
+      <p><b>{{.SigName}}</b></p>
+      <p>{{.SerialStr}}</p>
+      <p>{{.DataType}}</p>
+    {{end}}
+    `))
+
 const signedoutForm = `
 <p>Thanks for visiting!</p>
 <a href="/">Sign in again</a>
-`
-
-const stylesForm = `
-<style type="text/css">
-    .fieldset-auto-width {
-         display: inline-block;
-    }
-    ul#menu li {
-    display:inline-block;
-    }
-</style>
 `
 
 const sigCreateForm = stylesForm +
@@ -82,7 +147,7 @@ const sigCreateForm = stylesForm +
   `
 
 const readSigCreateForm = `
-<form action="/" method="post">
+<form action="/createReadSig" method="post">
   <fieldset class="fieldset-auto-width">
     <legend><h2>Read</h2></legend>
     Signal name:<br>
@@ -95,7 +160,7 @@ const readSigCreateForm = `
 </form>`
 
 const writeSigCreateForm = `
-<form action="/" method="post">
+<form action="/createWriteSig" method="post">
   <fieldset class="fieldset-auto-width">
     <legend><h2>Write</h2></legend>
     Signal name:<br>
@@ -108,8 +173,20 @@ const writeSigCreateForm = `
 </form>`
 
 const sigSelectForm = `
+  Data Type:<br>
   <select name="sigtype">
     <option value="integer">Integer</option>
     <option value="float">Float</option>
     <option value="string">C-style str</option>
   </select>`
+
+const stylesForm = `
+  <style type="text/css">
+      .fieldset-auto-width {
+           display: inline-block;
+      }
+      ul#menu li {
+      display:inline-block;
+      }
+  </style>
+  `
