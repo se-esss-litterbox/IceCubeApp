@@ -89,10 +89,19 @@ func home(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `<a href="%s">sign out</a><br>`, url)
 	fmt.Fprint(w, sigCreateForm)
 
-	if err := readSigsTemplate.Execute(w, readSigs); err != nil {
+	fmt.Fprint(w, `<h3>Protocol file</h3>`)
+	if err := readSigsProtoTemplate.Execute(w, readSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	if err := writeSigsTemplate.Execute(w, writeSigs); err != nil {
+	if err := writeSigsProtoTemplate.Execute(w, writeSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	fmt.Fprint(w, `<h3>EPICS DB file</h3>`)
+	if err := readSigsDBTemplate.Execute(w, readSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	if err := writeSigsDBTemplate.Execute(w, writeSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -103,7 +112,13 @@ func createReadSig(w http.ResponseWriter, r *http.Request) {
 	p := ReadSig{
 		SigName:   r.FormValue("signame"),
 		SerialStr: r.FormValue("serialcommand"),
-		DataType:  r.FormValue("sigtype"),
+	}
+	if r.FormValue("sigtype") == "integer" {
+		p.DataType = "%d"
+	} else if r.FormValue("sigtype") == "float" {
+		p.DataType = "%f"
+	} else if r.FormValue("sigtype") == "string" {
+		p.DataType = "%s"
 	}
 	key := datastore.NewIncompleteKey(c, "ReadSig", iceCubeKey(c))
 	_, err := datastore.Put(c, key, &p)
@@ -120,7 +135,6 @@ func createWriteSig(w http.ResponseWriter, r *http.Request) {
 	p := WriteSig{
 		SigName:   r.FormValue("signame"),
 		SerialStr: r.FormValue("serialcommand"),
-		DataType:  r.FormValue("sigtype"),
 	}
 	if r.FormValue("sigtype") == "integer" {
 		p.DataType = "%d"
@@ -143,9 +157,8 @@ func signedout(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, signedoutForm)
 }
 
-var writeSigsTemplate = template.Must(template.New("rSigs").Parse(
-	`<br>
-  {{range .}}
+var writeSigsProtoTemplate = template.Must(template.New("wSigsP").Parse(
+	`{{range .}}
     set_{{.SigName}} {<br>
     &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
     &emsp;ExtraInput = Ignore;<br>
@@ -153,9 +166,8 @@ var writeSigsTemplate = template.Must(template.New("rSigs").Parse(
   {{end}}
   `))
 
-var readSigsTemplate = template.Must(template.New("wSigs").Parse(
-	`<br>
-    {{range .}}
+var readSigsProtoTemplate = template.Must(template.New("rSigsP").Parse(
+	`{{range .}}
       get_{{.SigName}} {<br>
       &emsp;out "{{.SerialStr}}";<br>
       &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
@@ -163,6 +175,26 @@ var readSigsTemplate = template.Must(template.New("wSigs").Parse(
       }<br>
     {{end}}
     `))
+
+var writeSigsDBTemplate = template.Must(template.New("wSigsDB").Parse(
+	`{{range .}}
+        record(ao, {{.SigName}}:set) {<br>
+        &emsp;field(DESC, "{{.SigName}} input")<br>
+        &emsp;field(DTYP, "stream")<br>
+        &emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
+        }<br>
+      {{end}}
+      `))
+
+var readSigsDBTemplate = template.Must(template.New("rSigsDB").Parse(
+	`{{range .}}
+        record(ai, {{.SigName}}:get) {<br>
+        &emsp;field(DESC, "{{.SigName}} output")<br>
+        &emsp;field(DTYP, "stream")<br>
+        &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
+        }<br>
+      {{end}}
+      `))
 
 var definedSigsTemplate = template.Must(template.New("sigs").Parse(
 	`<br>
