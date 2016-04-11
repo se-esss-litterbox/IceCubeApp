@@ -85,6 +85,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	url, _ := user.LogoutURL(c, "/signedout")
+	fmt.Fprintf(w, `Source code found <a href="%s">on GitHub</a><br>`, "https://github.com/se-esss-litterbox/IceCubeApp")
 	fmt.Fprintf(w, `<a href="%s">sign out</a><br>`, url)
 	fmt.Fprint(w, sigCreateForm)
 
