@@ -91,7 +91,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	if err := definedSigsTemplate.Execute(w, readSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	if err := definedSigsTemplate.Execute(w, writeSigs); err != nil {
+	if err := writeSigsTemplate.Execute(w, writeSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -121,6 +121,13 @@ func createWriteSig(w http.ResponseWriter, r *http.Request) {
 		SerialStr: r.FormValue("serialcommand"),
 		DataType:  r.FormValue("sigtype"),
 	}
+	if r.FormValue("sigtype") == "integer" {
+		p.DataType = "%d"
+	} else if r.FormValue("sigtype") == "float" {
+		p.DataType = "%f"
+	} else if r.FormValue("sigtype") == "string" {
+		p.DataType = "%s"
+	}
 	key := datastore.NewIncompleteKey(c, "WriteSig", iceCubeKey(c))
 	_, err := datastore.Put(c, key, &p)
 	if err != nil {
@@ -134,6 +141,16 @@ func signedout(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "text/html; charset=utf-8")
 	fmt.Fprint(w, signedoutForm)
 }
+
+var writeSigsTemplate = template.Must(template.New("rSigs").Parse(
+	`<br>
+  {{range .}}
+    set_{{.SigName}} {<br>
+    &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
+    &emsp;ExtraInput = Ignore;<br>
+    }<br>
+  {{end}}
+  `))
 
 var definedSigsTemplate = template.Must(template.New("sigs").Parse(
 	`<br>
