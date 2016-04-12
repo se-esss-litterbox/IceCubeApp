@@ -2,12 +2,15 @@ package icecubeapp
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"appengine"
 	"appengine/datastore"
 	"appengine/user"
 )
+
+var baseTempl = template.Must(template.ParseFiles("base.html", "srcTempl.html"))
 
 // ReadSig is a read signal
 type ReadSig struct {
@@ -21,6 +24,12 @@ type WriteSig struct {
 	SigName   string
 	SerialStr string
 	DataType  string
+}
+
+// Signal contains a bunch of read & write signals
+type Signal struct {
+	Read  []ReadSig
+	Write []WriteSig
 }
 
 // testingKey returns the key used for all testing entries.
