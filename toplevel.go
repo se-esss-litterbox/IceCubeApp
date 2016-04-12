@@ -33,8 +33,8 @@ type Signal struct {
 }
 
 // testingKey returns the key used for all testing entries.
-func iceCubeKey(c appengine.Context) *datastore.Key {
-	return datastore.NewKey(c, "IceCube", "iceCube_testing", 0, nil)
+func iceCubeKey(c appengine.Context, username string) *datastore.Key {
+	return datastore.NewKey(c, "IceCube", username, 0, nil)
 }
 
 func init() {
