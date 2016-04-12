@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>IceCube Factory</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css">
   </head>
 
   <body>
@@ -9,14 +10,6 @@
       {{template "srccode" .}}
       {{template "logout" .}}
     </div>
-    <style type="text/css">
-        .fieldset-auto-width {
-             display: inline-block;
-        }
-        ul#menu li {
-        display:inline-block;
-        }
-    </style>
     <fieldset class="fieldset-auto-width">
       <legend><h3>New Signal Creator</h3></legend>
       <ul id="menu">
@@ -62,33 +55,41 @@
 
     <h3>Protocol file</h3>
     {{range .Write}}
-      set_{{.SigName}} {<br>
+      <div class="protowrite">
+        set_{{.SigName}} {<br>
         &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
         &emsp;ExtraInput = Ignore;<br>
-      }<br>
+        }<br>
+      </div>
     {{end}}
     {{range .Read}}
-      get_{{.SigName}} {<br>
+      <div class="protoread">
+        get_{{.SigName}} {<br>
         &emsp;out "{{.SerialStr}}";<br>
         &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
         &emsp;ExtraInput = Ignore;<br>
-      }<br>
+        }<br>
+      </div>
     {{end}}
 
     <h3>EPICS DB file</h3>
     {{range .Write}}
-      record(ao, {{.SigName}}:set) {<br>
+      <div class="dbwrite">
+        record(ao, {{.SigName}}:set) {<br>
         &emsp;field(DESC, "{{.SigName}} input")<br>
         &emsp;field(DTYP, "stream")<br>
         &emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
-      }<br>
+        }<br>
+      </div>
     {{end}}
     {{range .Read}}
-      record(ai, {{.SigName}}:get) {<br>
+      <div class="dbread">
+        record(ai, {{.SigName}}:get) {<br>
         &emsp;field(DESC, "{{.SigName}} output")<br>
         &emsp;field(DTYP, "stream")<br>
         &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
-      }<br>
+        }<br>
+      </div>
     {{end}}
   </body>
 </html>
