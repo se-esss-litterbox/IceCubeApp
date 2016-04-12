@@ -1,5 +1,6 @@
 body {
   font-family:"TitilliumTextMedium",helvetica,sans-serif;
+  font-size: 14px;
 }
 
 h2 {
@@ -14,20 +15,9 @@ h3 {
   display: inline-block;
 }
 
-.protowrite{
+.code {
   font-family: "Courier New", Courier, monospace;
-}
-
-.protoread{
-  font-family: "Courier New", Courier, monospace;
-}
-
-.dbwrite{
-  font-family: "Courier New", Courier, monospace;
-}
-
-.dbread{
-  font-family: "Courier New", Courier, monospace;
+  font-size: 90%;
 }
 
 ul#menu li {

@@ -55,7 +55,7 @@
 
     <h2>Protocol file</h2>
     {{range .Write}}
-      <div class="protowrite">
+      <div class="code">
         set_{{.SigName}} {<br>
         &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
         &emsp;ExtraInput = Ignore;<br>
@@ -63,7 +63,7 @@
       </div>
     {{end}}
     {{range .Read}}
-      <div class="protoread">
+      <div class="code">
         get_{{.SigName}} {<br>
         &emsp;out "{{.SerialStr}}";<br>
         &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
@@ -74,7 +74,7 @@
 
     <h2>EPICS DB file</h2>
     {{range .Write}}
-      <div class="dbwrite">
+      <div class="code">
         record(ao, {{.SigName}}:set) {<br>
         &emsp;field(DESC, "{{.SigName}} input")<br>
         &emsp;field(DTYP, "stream")<br>
@@ -83,7 +83,7 @@
       </div>
     {{end}}
     {{range .Read}}
-      <div class="dbread">
+      <div class="code">
         record(ai, {{.SigName}}:get) {<br>
         &emsp;field(DESC, "{{.SigName}} output")<br>
         &emsp;field(DTYP, "stream")<br>
