@@ -11,12 +11,12 @@
       {{template "logout" .}}
     </div>
     <fieldset class="fieldset-auto-width">
-      <legend><h3>New Signal Creator</h3></legend>
+      <legend><h2>New Signal Creator</h2></legend>
       <ul id="menu">
         <li>
           <form action="/createReadSig" method="post">
             <fieldset class="fieldset-auto-width">
-              <legend><b>Read</b></legend>
+              <legend><h3>Read</h3></legend>
               Signal name:<br>
               <input type="text" name="signame" required></input><br><br>
               Serial string:<br>
@@ -34,7 +34,7 @@
         <li>
           <form action="/createWriteSig" method="post">
             <fieldset class="fieldset-auto-width">
-              <legend><b>Write</b></legend>
+              <legend><h3>Write</h3></legend>
               Signal name:<br>
               <input type="text" name="signame" required></input><br><br>
               Serial string:<br>
@@ -53,7 +53,7 @@
     </fieldset>
     <br>
 
-    <h3>Protocol file</h3>
+    <h2>Protocol file</h2>
     {{range .Write}}
       <div class="protowrite">
         set_{{.SigName}} {<br>
@@ -72,7 +72,7 @@
       </div>
     {{end}}
 
-    <h3>EPICS DB file</h3>
+    <h2>EPICS DB file</h2>
     {{range .Write}}
       <div class="dbwrite">
         record(ao, {{.SigName}}:set) {<br>

@@ -1,6 +1,35 @@
+body {
+  font-family:"TitilliumTextMedium",helvetica,sans-serif;
+}
+
+h2 {
+  color: #00749f;
+}
+
+h3 {
+  color: #0094ca;
+}
+
 .fieldset-auto-width {
   display: inline-block;
 }
+
+.protowrite{
+  font-family: "Courier New", Courier, monospace;
+}
+
+.protoread{
+  font-family: "Courier New", Courier, monospace;
+}
+
+.dbwrite{
+  font-family: "Courier New", Courier, monospace;
+}
+
+.dbread{
+  font-family: "Courier New", Courier, monospace;
+}
+
 ul#menu li {
   display:inline-block;
 }
