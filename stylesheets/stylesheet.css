@@ -15,9 +15,25 @@ h3 {
   display: inline-block;
 }
 
-.code {
+.code,#db {
   font-family: "Courier New", Courier, monospace;
   font-size: 90%;
+  width: 500px;
+}
+
+.code,#proto {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 90%;
+  width: 200px;
+}
+
+#protoblock {
+  clear: left;
+  float: left;
+}
+
+#dbblock {
+  float: left;
 }
 
 ul#menu li {
