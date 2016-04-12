@@ -7,8 +7,6 @@
   <body>
     <div>
       {{template "srccode" .}}
-    </div>
-    <div>
       {{template "logout" .}}
     </div>
     <style type="text/css">
@@ -20,74 +18,76 @@
         }
     </style>
     <fieldset class="fieldset-auto-width">
-    <legend><h2>New Signal Creator</h2></legend>
-    <ul id="menu">
-    <li>
-      <form action="/createReadSig" method="post">
-        <fieldset class="fieldset-auto-width">
-          <legend><h2>Read</h2></legend>
-          Signal name:<br>
-          <input type="text" name="signame" required></input><br><br>
-          Serial string:<br>
-          <input type="text" name="serialcommand" required></input><br><br>
-          Data Type:<br>
-          <select name="sigtype">
-            <option value="integer">Integer</option>
-            <option value="float">Float</option>
-            <option value="string">C-style str</option>
-          </select><br><br>
-          <input type="submit" value="Create">
-        </fieldset>
-      </form>
-    </li>
-    <li><form action="/createWriteSig" method="post">
-      <fieldset class="fieldset-auto-width">
-        <legend><h2>Write</h2></legend>
-        Signal name:<br>
-        <input type="text" name="signame" required></input><br><br>
-        Serial string:<br>
-        <input type="text" name="serialcommand" required></input><br><br>
-        Data Type:<br>
-        <select name="sigtype">
-          <option value="integer">Integer</option>
-          <option value="float">Float</option>
-          <option value="string">C-style str</option>
-        </select><br><br>
-        <input type="submit" value="Create">
-        </fieldset>
-    </form></li>
-    </ul>
+      <legend><h3>New Signal Creator</h3></legend>
+      <ul id="menu">
+        <li>
+          <form action="/createReadSig" method="post">
+            <fieldset class="fieldset-auto-width">
+              <legend><b>Read</b></legend>
+              Signal name:<br>
+              <input type="text" name="signame" required></input><br><br>
+              Serial string:<br>
+              <input type="text" name="serialcommand" required></input><br><br>
+              Data Type:<br>
+              <select name="sigtype">
+                <option value="integer">Integer</option>
+                <option value="float">Float</option>
+                <option value="string">C-style str</option>
+              </select><br><br>
+              <input type="submit" value="Create">
+            </fieldset>
+          </form>
+        </li>
+        <li>
+          <form action="/createWriteSig" method="post">
+            <fieldset class="fieldset-auto-width">
+              <legend><b>Write</b></legend>
+              Signal name:<br>
+              <input type="text" name="signame" required></input><br><br>
+              Serial string:<br>
+              <input type="text" name="serialcommand" required></input><br><br>
+              Data Type:<br>
+              <select name="sigtype">
+                <option value="integer">Integer</option>
+                <option value="float">Float</option>
+                <option value="string">C-style str</option>
+              </select><br><br>
+              <input type="submit" value="Create">
+            </fieldset>
+          </form>
+        </li>
+      </ul>
     </fieldset>
     <br>
 
     <h3>Protocol file</h3>
     {{range .Write}}
       set_{{.SigName}} {<br>
-      &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
-      &emsp;ExtraInput = Ignore;<br>
+        &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
+        &emsp;ExtraInput = Ignore;<br>
       }<br>
     {{end}}
     {{range .Read}}
       get_{{.SigName}} {<br>
-      &emsp;out "{{.SerialStr}}";<br>
-      &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
-      &emsp;ExtraInput = Ignore;<br>
+        &emsp;out "{{.SerialStr}}";<br>
+        &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
+        &emsp;ExtraInput = Ignore;<br>
       }<br>
     {{end}}
 
     <h3>EPICS DB file</h3>
     {{range .Write}}
       record(ao, {{.SigName}}:set) {<br>
-      &emsp;field(DESC, "{{.SigName}} input")<br>
-      &emsp;field(DTYP, "stream")<br>
-      &emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
+        &emsp;field(DESC, "{{.SigName}} input")<br>
+        &emsp;field(DTYP, "stream")<br>
+        &emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
       }<br>
     {{end}}
     {{range .Read}}
       record(ai, {{.SigName}}:get) {<br>
-      &emsp;field(DESC, "{{.SigName}} output")<br>
-      &emsp;field(DTYP, "stream")<br>
-      &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
+        &emsp;field(DESC, "{{.SigName}} output")<br>
+        &emsp;field(DTYP, "stream")<br>
+        &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
       }<br>
     {{end}}
   </body>
