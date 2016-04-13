@@ -36,10 +36,13 @@ h3 {
 
 #footer {
   background-color: #0094ca;
+  color: #FFFFFF;
   margin: 0px;
-  height: 60px;
   border-radius: 5px;
   clear: both;
+  font-size: 90%;
+  text-align: center;
+  padding: 15px;
 }
 
 a {
