@@ -1,6 +1,16 @@
 body {
   font-family:"TitilliumTextMedium",helvetica,sans-serif;
   font-size: 14px;
+  margin: 10px;
+}
+
+h1 {
+  color: #FFFFFF;
+  text-align: center;
+  position: relative;top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 h2 {
@@ -9,6 +19,14 @@ h2 {
 
 h3 {
   color: #0094ca;
+}
+
+#header {
+  background-color: #0094ca;
+  margin: 0px;
+  margin-bottom: 10px;
+  height: 90px;
+  border-radius: 5px;
 }
 
 .fieldset-auto-width {

@@ -6,6 +6,9 @@
   </head>
 
   <body>
+    <div id="header">
+      <h1>Ice Cube Dispenser</h1>
+    </div>
     <div>
       {{template "srccode" .}}
       {{template "logout" .}}
@@ -55,45 +58,42 @@
 
     <div id="protoblock">
     <h2>Protocol file</h2>
-    {{range .Write}}
       <div class="code" id="proto">
-        set_{{.SigName}} {<br>
-        &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
-        &emsp;ExtraInput = Ignore;<br>
-        }<br>
+        Terminator = LF;<br><br>
+        {{range .Write}}
+          set_{{.SigName}} {<br>
+            &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
+            &emsp;ExtraInput = Ignore;<br>
+          }<br>
+        {{end}}
+        {{range .Read}}
+          get_{{.SigName}} {<br>
+          &emsp;out "{{.SerialStr}}";<br>
+          &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
+          &emsp;ExtraInput = Ignore;<br>
+          }<br>
+        {{end}}
       </div>
-    {{end}}
-    {{range .Read}}
-      <div class="code" id="proto">
-        get_{{.SigName}} {<br>
-        &emsp;out "{{.SerialStr}}";<br>
-        &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
-        &emsp;ExtraInput = Ignore;<br>
-        }<br>
-      </div>
-    {{end}}
     </div>
 
     <div id="dbblock">
     <h2>EPICS DB file</h2>
-    {{range .Write}}
       <div class="code" id="db">
+        {{range .Write}}
         record(ao, {{.SigName}}:set) {<br>
         &emsp;field(DESC, "{{.SigName}} input")<br>
         &emsp;field(DTYP, "stream")<br>
         &emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
         }<br>
-      </div>
     {{end}}
     {{range .Read}}
-      <div class="code" id="db">
         record(ai, {{.SigName}}:get) {<br>
         &emsp;field(DESC, "{{.SigName}} output")<br>
         &emsp;field(DTYP, "stream")<br>
         &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
         }<br>
-      </div>
     {{end}}
+  </div>
     </div>
   </body>
 </html>
