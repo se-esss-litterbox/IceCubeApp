@@ -29,6 +29,23 @@ h3 {
   border-radius: 5px;
 }
 
+#signout {
+  color: #FFFFFF;
+  text-align: right;
+}
+
+#footer {
+  background-color: #0094ca;
+  margin: 0px;
+  height: 60px;
+  border-radius: 5px;
+  clear: both;
+}
+
+a {
+  color: #FFFFFF;
+}
+
 .fieldset-auto-width {
   display: inline-block;
 }

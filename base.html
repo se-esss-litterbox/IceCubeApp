@@ -8,10 +8,10 @@
   <body>
     <div id="header">
       <h1>Ice Cube Dispenser</h1>
+      <div id="signout">{{template "logout" .}}</div>
     </div>
     <div>
       {{template "srccode" .}}
-      {{template "logout" .}}
     </div>
     <fieldset class="fieldset-auto-width">
       <legend><h2>New Signal Creator</h2></legend>
@@ -94,6 +94,8 @@
         }<br>
     {{end}}
   </div>
+    </div>
+    <div id="footer">
     </div>
   </body>
 </html>
