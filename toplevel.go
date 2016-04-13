@@ -32,7 +32,7 @@ type Signal struct {
 	Write []WriteSig
 }
 
-// testingKey returns the key used for all testing entries.
+// iceCubeKey returns the key used for all IceCube entries.
 func iceCubeKey(c appengine.Context, username string) *datastore.Key {
 	return datastore.NewKey(c, "IceCube", username, 0, nil)
 }
