@@ -11,6 +11,8 @@ import (
 )
 
 var baseTempl = template.Must(template.ParseFiles("base.html", "srcTempl.html"))
+var protoTempl = template.Must(template.ParseFiles("protoTempl.tmp"))
+var dbTempl = template.Must(template.ParseFiles("dbTempl.tmp"))
 
 // ReadSig is a read signal
 type ReadSig struct {
@@ -43,6 +45,68 @@ func init() {
 	http.HandleFunc("/home", home)
 	http.HandleFunc("/createReadSig", createReadSig)
 	http.HandleFunc("/createWriteSig", createWriteSig)
+	http.HandleFunc("/arduino.proto", serveProtoFile)
+	http.HandleFunc("/arduino.db", serveDBFile)
+}
+
+func serveDBFile(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	u := user.Current(c)
+
+	// Get ReadSigs from the persistent datastore
+	q := datastore.NewQuery("ReadSig").Ancestor(iceCubeKey(c, u.String())).Order("SigName").Limit(10)
+	readSigs := make([]ReadSig, 0, 10)
+	if _, err := q.GetAll(c, &readSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Get WriteSigs from the persistent datastore
+	q = datastore.NewQuery("WriteSig").Ancestor(iceCubeKey(c, u.String())).Order("SigName").Limit(10)
+	writeSigs := make([]WriteSig, 0, 10)
+	if _, err := q.GetAll(c, &writeSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	sigs := Signal{
+		Read:  readSigs,
+		Write: writeSigs,
+	}
+
+	if err := dbTempl.Execute(w, sigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func serveProtoFile(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	u := user.Current(c)
+
+	// Get ReadSigs from the persistent datastore
+	q := datastore.NewQuery("ReadSig").Ancestor(iceCubeKey(c, u.String())).Order("SigName").Limit(10)
+	readSigs := make([]ReadSig, 0, 10)
+	if _, err := q.GetAll(c, &readSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Get WriteSigs from the persistent datastore
+	q = datastore.NewQuery("WriteSig").Ancestor(iceCubeKey(c, u.String())).Order("SigName").Limit(10)
+	writeSigs := make([]WriteSig, 0, 10)
+	if _, err := q.GetAll(c, &writeSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	sigs := Signal{
+		Read:  readSigs,
+		Write: writeSigs,
+	}
+
+	if err := protoTempl.Execute(w, sigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func welcome(w http.ResponseWriter, r *http.Request) {

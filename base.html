@@ -73,29 +73,29 @@
       </div>
     </div>
 
-    <div id="dbblock">
+  <div id="dbblock">
     <h2>EPICS DB file</h2>
       <div class="code" id="db">
         {{range .Write}}
-        record(ao, {{.SigName}}:set) {<br>
-        &emsp;field(DESC, "{{.SigName}} input")<br>
-        &emsp;field(DTYP, "stream")<br>
-        &emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
-        }<br>
-    {{end}}
-    {{range .Read}}
-        record(ai, {{.SigName}}:get) {<br>
-        &emsp;field(DESC, "{{.SigName}} output")<br>
-        &emsp;field(DTYP, "stream")<br>
-        &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
-        }<br>
-    {{end}}
-  </div>
+          record(ao, {{.SigName}}:set) {<br>
+          &emsp;field(DESC, "{{.SigName}} input")<br>
+          &emsp;field(DTYP, "stream")<br>
+          &emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
+          }<br>
+        {{end}}
+        {{range .Read}}
+          record(ai, {{.SigName}}:get) {<br>
+          &emsp;field(DESC, "{{.SigName}} output")<br>
+          &emsp;field(DTYP, "stream")<br>
+          &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
+          }<br>
+        {{end}}
+      </div>
     </div>
     <div id="footer">
-    <div>
-      {{template "srccode" .}}
-    </div>
+      <div>
+        {{template "srccode" .}}
+      </div>
     </div>
   </body>
 </html>

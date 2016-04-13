@@ -1,0 +1,14 @@
+Terminator = LF;
+{{range .Write}}
+set_{{.SigName}} {
+    out "{{.SerialStr}}{{.DataType}}\n";
+    ExtraInput = Ignore;
+}
+{{end}}
+{{range .Read}}
+get_{{.SigName}} {
+    out "{{.SerialStr}}";
+    in "{{.SerialStr}} {{.DataType}}"
+    ExtraInput = Ignore;
+}
+{{end}}
