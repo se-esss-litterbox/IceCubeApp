@@ -11,6 +11,48 @@
       <h1>Ice Cube Dispenser</h1>
       <div id="signout">{{template "logout" .}}</div>
     </div>
+    <table>
+      <tr>
+        <td><h3>Name</h3></td>
+        <td><h3>Serial str</h3></td>
+        <td><h3>Data type</h3></td>
+        <td><h3>Read/Write</h3></td>
+      </tr>
+        {{range .Read}}
+      <tr>
+        <form action="/createReadSig" method="post">
+          <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
+          <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
+          <td>
+            <select name="sigtype">
+              <option value="integer">Integer</option>
+              <option value="float">Float</option>
+              <option value="string">C-style str</option>
+            </select>
+          </td>
+          <td>Read</td>
+          <td><input type="submit" value="Create"></td>
+        </form>
+      </tr>
+      {{end}}
+        {{range .Write}}
+      <tr>
+        <form action="/createReadSig" method="post">
+          <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
+          <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
+          <td>
+            <select name="sigtype">
+              <option value="integer">Integer</option>
+              <option value="float">Float</option>
+              <option value="string">C-style str</option>
+            </select>
+          </td>
+          <td>Write</td>
+          <td><input type="submit" value="Create"></td>
+        </form>
+      </tr>
+      {{end}}
+    </table>
       <ul id="menu">
         <li>
           <form action="/createReadSig" method="post">
