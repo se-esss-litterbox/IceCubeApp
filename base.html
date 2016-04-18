@@ -60,6 +60,7 @@
             </select>
           </td>
           <td><input type="submit" value="Edit"></td>
+          <td><input type="submit" value="Delete"></td>
         </form>
       </tr>
       {{end}}
@@ -84,44 +85,6 @@
         </form>
       </tr>
     </table>
-      <ul id="menu">
-        <li>
-          <form action="/createReadSig" method="post">
-            <fieldset class="fieldset-auto-width">
-              <legend><h3>Read</h3></legend>
-              Signal name:<br>
-              <input type="text" name="signame" required></input><br><br>
-              Serial string:<br>
-              <input type="text" name="serialcommand" required></input><br><br>
-              Data Type:<br>
-              <select name="sigtype">
-                <option value="integer">Integer</option>
-                <option value="float">Float</option>
-                <option value="string">C-style str</option>
-              </select><br><br>
-              <input type="submit" value="Create">
-            </fieldset>
-          </form>
-        </li>
-        <li>
-          <form action="/createWriteSig" method="post">
-            <fieldset class="fieldset-auto-width">
-              <legend><h3>Write</h3></legend>
-              Signal name:<br>
-              <input type="text" name="signame" required></input><br><br>
-              Serial string:<br>
-              <input type="text" name="serialcommand" required></input><br><br>
-              Data Type:<br>
-              <select name="sigtype">
-                <option value="integer">Integer</option>
-                <option value="float">Float</option>
-                <option value="string">C-style str</option>
-              </select><br><br>
-              <input type="submit" value="Create">
-            </fieldset>
-          </form>
-        </li>
-      </ul>
     <br>
 
     <div id="protoblock">
