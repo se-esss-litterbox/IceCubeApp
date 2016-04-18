@@ -36,6 +36,10 @@ func createWriteSig(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
 
+	if r.PostFormValue("action") == "Delete" {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
+
 	p := WriteSig{
 		SigName:   r.FormValue("signame"),
 		SerialStr: r.FormValue("serialcommand"),
