@@ -30,12 +30,18 @@
               <option value="string">C-style str</option>
             </select>
           </td>
-          <td>Read</td>
-          <td><input type="submit" value="Create"></td>
+          <td>
+            <select name="rw">
+              <option value="r" selected>Read</option>
+              <option value="w">Write</option>
+            </select>
+          </td>
+          <td><input type="submit" value="Edit"></td>
+          <td><input type="submit" value="Delete"></td>
         </form>
       </tr>
       {{end}}
-        {{range .Write}}
+      {{range .Write}}
       <tr>
         <form action="/createReadSig" method="post">
           <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
@@ -47,11 +53,36 @@
               <option value="string">C-style str</option>
             </select>
           </td>
-          <td>Write</td>
-          <td><input type="submit" value="Create"></td>
+          <td>
+            <select name="rw">
+              <option value="r">Read</option>
+              <option value="w" selected>Write</option>
+            </select>
+          </td>
+          <td><input type="submit" value="Edit"></td>
         </form>
       </tr>
       {{end}}
+      <tr>
+        <form action="/createReadSig" method="post">
+          <td><input type="text" name="signame" required></input></td>
+          <td><input type="text" name="serialcommand" required></input></td>
+          <td>
+            <select name="sigtype">
+              <option value="integer">Integer</option>
+              <option value="float">Float</option>
+              <option value="string">C-style str</option>
+            </select>
+          </td>
+          <td>
+            <select name="rw">
+              <option value="r">Read</option>
+              <option value="w">Write</option>
+            </select>
+          </td>
+          <td><input type="submit" value="Create"></td>
+        </form>
+      </tr>
     </table>
       <ul id="menu">
         <li>
