@@ -25,9 +25,9 @@
           <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
           <td>
             <select name="sigtype">
-              <option value="integer">Integer</option>
-              <option value="float" selected>Float</option>
-              <option value="string">C-style str</option>
+              <option value="integer" {{if eq .DataType "%d"}}selected="selected"{{end}}>Integer</option>
+              <option value="float" {{if eq .DataType "%f"}}selected="selected"{{end}}>Float</option>
+              <option value="string" {{if eq .DataType "%s"}}selected="selected"{{end}}>C-style str</option>
             </select>
           </td>
           <td>
@@ -48,9 +48,9 @@
           <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
           <td>
             <select name="sigtype">
-              <option value="integer">Integer</option>
-              <option value="float" selected>Float</option>
-              <option value="string">C-style str</option>
+              <option value="integer" {{if eq .DataType "%d"}}selected="selected"{{end}}>Integer</option>
+              <option value="float" {{if eq .DataType "%f"}}selected="selected"{{end}}>Float</option>
+              <option value="string" {{if eq .DataType "%s"}}selected="selected"{{end}}>C-style str</option>
             </select>
           </td>
           <td>
@@ -71,7 +71,7 @@
           <td>
             <select name="sigtype">
               <option value="integer">Integer</option>
-              <option value="float" selected="selected">Float</option>
+              <option value="float">Float</option>
               <option value="string">C-style str</option>
             </select>
           </td>
