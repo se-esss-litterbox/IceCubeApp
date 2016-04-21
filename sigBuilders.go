@@ -8,6 +8,17 @@ import (
 	"appengine/user"
 )
 
+func createSig(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("rw") == "r" {
+		createReadSig(w, r)
+		return
+	}
+	if r.FormValue("rw") == "w" {
+		createWriteSig(w, r)
+		return
+	}
+}
+
 func createReadSig(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)

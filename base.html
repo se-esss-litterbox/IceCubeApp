@@ -20,13 +20,13 @@
       </tr>
         {{range .Read}}
       <tr>
-        <form action="/createReadSig" method="post">
+        <form action="/createSig" method="post">
           <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
           <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
           <td>
             <select name="sigtype">
               <option value="integer">Integer</option>
-              <option value="float">Float</option>
+              <option value="float" selected>Float</option>
               <option value="string">C-style str</option>
             </select>
           </td>
@@ -43,13 +43,13 @@
       {{end}}
       {{range .Write}}
       <tr>
-        <form action="/createReadSig" method="post">
+        <form action="/createSig" method="post">
           <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
           <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
           <td>
             <select name="sigtype">
               <option value="integer">Integer</option>
-              <option value="float">Float</option>
+              <option value="float" selected>Float</option>
               <option value="string">C-style str</option>
             </select>
           </td>
@@ -65,13 +65,13 @@
       </tr>
       {{end}}
       <tr>
-        <form action="/createReadSig" method="post">
+        <form action="/createSig" method="post">
           <td><input type="text" name="signame" required></input></td>
           <td><input type="text" name="serialcommand" required></input></td>
           <td>
             <select name="sigtype">
               <option value="integer">Integer</option>
-              <option value="float">Float</option>
+              <option value="float" selected="selected">Float</option>
               <option value="string">C-style str</option>
             </select>
           </td>

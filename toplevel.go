@@ -43,8 +43,7 @@ func init() {
 	http.HandleFunc("/", welcome)
 	http.HandleFunc("/signedout", signedout)
 	http.HandleFunc("/home", home)
-	http.HandleFunc("/createReadSig", createReadSig)
-	http.HandleFunc("/createWriteSig", createWriteSig)
+	http.HandleFunc("/createSig", createSig)
 	http.HandleFunc("/arduino.proto", serveProtoFile)
 	http.HandleFunc("/arduino.db", serveDBFile)
 }
