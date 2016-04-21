@@ -12,6 +12,24 @@ func createReadSig(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
 
+	if r.PostFormValue("updateOrDelete") == "Delete" {
+		var sigs []ReadSig
+		sig := r.FormValue("signame")
+		q := datastore.NewQuery("ReadSig").Filter("SigName =", sig).KeysOnly()
+		keys, _ := q.GetAll(c, sigs)
+		datastore.Delete(c, keys[0])
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	if r.PostFormValue("updateOrDelete") == "Update" {
+		var sigs []ReadSig
+		sig := r.FormValue("signame")
+		q := datastore.NewQuery("ReadSig").Filter("SigName =", sig).KeysOnly()
+		keys, _ := q.GetAll(c, sigs)
+		datastore.Delete(c, keys[0])
+	}
+
 	p := ReadSig{
 		SigName:   r.FormValue("signame"),
 		SerialStr: r.FormValue("serialcommand"),
@@ -36,8 +54,22 @@ func createWriteSig(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
 
-	if r.PostFormValue("action") == "Delete" {
+	if r.PostFormValue("updateOrDelete") == "Delete" {
+		var sigs []WriteSig
+		sig := r.FormValue("signame")
+		q := datastore.NewQuery("WriteSig").Filter("SigName =", sig).KeysOnly()
+		keys, _ := q.GetAll(c, sigs)
+		datastore.Delete(c, keys[0])
 		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	if r.PostFormValue("updateOrDelete") == "Update" {
+		var sigs []WriteSig
+		sig := r.FormValue("signame")
+		q := datastore.NewQuery("WriteSig").Filter("SigName =", sig).KeysOnly()
+		keys, _ := q.GetAll(c, sigs)
+		datastore.Delete(c, keys[0])
 	}
 
 	p := WriteSig{
