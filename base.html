@@ -18,7 +18,7 @@
         <td><h3>Data type</h3></td>
         <td><h3>Read/Write</h3></td>
       </tr>
-        {{range .Read}}
+      {{range .Read}}
       <tr>
         <form action="/createSig" method="post">
           <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
