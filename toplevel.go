@@ -46,6 +46,7 @@ func init() {
 	http.HandleFunc("/createSig", createSig)
 	http.HandleFunc("/arduino.proto", serveProtoFile)
 	http.HandleFunc("/arduino.db", serveDBFile)
+	http.HandleFunc("/download.tar", tarit)
 }
 
 func serveDBFile(w http.ResponseWriter, r *http.Request) {

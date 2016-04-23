@@ -4,5 +4,9 @@ api_version: go1
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
+
+- url: /files
+  static_dir: files
+
 - url: /.*
   script: _go_app
