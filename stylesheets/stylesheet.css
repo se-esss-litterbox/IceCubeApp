@@ -56,6 +56,12 @@ a {
   border-radius: 5px;
 }
 
+#normallink {
+  background-color: white;
+  color: black;
+  padding: 0px;
+}
+
 .fieldset-auto-width {
   display: inline-block;
 }

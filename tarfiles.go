@@ -13,17 +13,17 @@ func tarit(w http.ResponseWriter, r *http.Request) {
 	tarball := tar.NewWriter(w)
 	defer tarball.Close()
 
-	info, err := os.Stat("/files")
+	info, err := os.Stat("files")
 	if err != nil {
 		return
 	}
 
 	var baseDir string
 	if info.IsDir() {
-		baseDir = filepath.Base("/files")
+		baseDir = filepath.Base("files")
 	}
 
-	filepath.Walk("/files", func(path string, info os.FileInfo, err error) error {
+	filepath.Walk("files", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -33,7 +33,7 @@ func tarit(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if baseDir != "" {
-			header.Name = filepath.Join(baseDir, strings.TrimPrefix(path, "/files"))
+			header.Name = filepath.Join(baseDir, strings.TrimPrefix(path, "files"))
 		}
 
 		if err := tarball.WriteHeader(header); err != nil {

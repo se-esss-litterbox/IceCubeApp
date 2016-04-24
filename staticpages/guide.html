@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>IceCube Dispenser -- how to</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Titillium+Web">
+  </head>
+  <body>
+    <div id="header">
+      <h1>How to use the IceCube Dispenser</h1>
+      <div id="signout"><a href="..">Back to the app</a></div>
+    </div>
+    <div>
+      <div>
+        <h2>Assumptions</h2>
+        We assume that you have a Raspberry Pi that you would like to use as an
+        EPICS IOC to control/monitor a system via a serial port.
+        For the moment, this port is hard-coded as being /dev/ttyACM0, since this
+        is the standard for Arduino systems, however future updates will allow
+        flexibility in this.
+        <br>
+        The control functionality offered by this architecture is, from the point
+        of view of the EPICS IOC, a state-machine.  That is, the IOC will send
+        serial commands to the controlled-system (e.g., the Arduino) to change its
+        state, or to request the values of various settings.  The detailed
+        behaviour of the system is expected to be coded into the system itself; e.g.,
+        via code uploaded to the Arduino microcontroller.
+      </div>
+      <div>
+        <h2>Installing EPICS</h2>
+        For any of this to work, you will need EPICS installed on your Raspberry Pi.
+        This should be done by following the instructions given by Steve Molloy at
+        <a id="normallink" href="http://www.smolloy.com/2015/12/epics-ioc-on-a-raspberry-pi/">this link</a>.
+        <br>
+        Future work will offer functionality to do all of this work for you.
+      </div>
+      <div>
+        <h2>Building an IceCube</h2>
+        Start by downloading the empty IceCube IOC.  The link to this is on the
+        <a id="normallink" href="..">home page</a> of this app, or you can just
+        <a id="normallink" href="/files/iceCubeIOC.tar.gz">click here</a>.  Download
+        that file, and unzip/untar it into some appropriate place.  We recommend
+        putting it in <span class="code">/home/pi/Apps/epics/</span>.
+        <br>
+        There are two things missing from the IceCube IOC that you just downloaded,
+        and the lack of these things will mean that an attempt to compile it will
+        fail.  You need to make two files:
+        <ul>
+          <li><span class="code">arduino.proto</span> defines the communications
+            protocol.</li>
+          <li><span class="code">arduino.db</span> specifies process variables
+            that will be served by the IOC.</li>
+        </ul>
+        These files are contructed by filling out the necessary values on the forms
+        on the <a id="normallink">main page</a> of the app.  As you do this, you
+        will notice that the code blocks at the bottom of the page will be populated
+        according to the values you have provided.  These blocks contain the necessary
+        contents of the two missing files.
+        <br>
+        Copy the code listed under "Protocol File" into a new file called
+        <span class="code">.../iceCubeIOC/iceCubeIOCApp/Db/arduino.proto</span>.
+        <br>
+        Copy the code listed under "EPICS DB File" into a new file called
+        <span class="code">.../iceCubeIOC/iceCubeIOCApp/Db/arduino.db</span>.
+        <br>
+        Note that the naming and location of these files is critical.
+        <br>
+        Once that has been done, navigate to <span class="code">.../iceCubeIOC</span>
+        and run <span class="code">make</span>.  If this is successful, you are now
+        able to run the IOC.
+        <br>
+        <span class="code">./bin/linux-arm/iceCubeIOC iocBoot/iociceCubeIOC/st.cmd</span>
+        <br>
+        <h2>Comments, queries, requests for improvements, etc.</h2>
+        Please get in touch via <a id="normallink" href="https://github.com/se-esss-litterbox/IceCubeApp/issues">Github</a>.
+      </div>
+    </div>
+    <div id="footer">
+      <div>
+        <a href="https://github.com/se-esss-litterbox/IceCubeApp">GitHub</a><br>
+        <a href="https://github.com/se-esss-litterbox/IceCubeApp/issues">Issues, bug reports, comments, etc.</a><br>
+      </div>
+    </div>
+  </body>
+</html>

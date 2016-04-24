@@ -5,8 +5,12 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
+- url: /staticpages
+  static_dir: staticpages
+
 - url: /files
   static_dir: files
+  application_readable: true
 
 - url: /.*
   script: _go_app
