@@ -164,9 +164,14 @@
         {{end}}
         {{range .Read}}
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;case '{{.SerialStr}}':<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Serial.print("R ");<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/*<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Write code here.<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Make sure to Serial.print()<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;the expected data<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*/<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Serial.print("\n");<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;input = "";<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
         {{end}}
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;default:<br>
