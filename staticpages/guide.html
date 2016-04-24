@@ -17,7 +17,9 @@
         EPICS IOC to control/monitor a system via a serial port.
         For the moment, this port is hard-coded as being <span class="code">/dev/ttyACM0</span>,
         since this is the standard for Arduino systems, however future updates will
-        allow flexibility in this.
+        allow flexibility in this.  To alter the serial port manually, edit the file
+        <span class="code">/home/pi/Apps/epics/iceCubeIOC/iocBoot/iociceCubeIOC/st.cmd</span>
+        and alter the reference to <span class="code">/dev/ttyACM0</span>.
         <br>
         The control functionality offered by this architecture is, from the point
         of view of the EPICS IOC, a state-machine.  That is, the IOC will send
