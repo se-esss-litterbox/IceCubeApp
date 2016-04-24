@@ -90,10 +90,12 @@ a {
 }
 
 #dbblock {
+  clear: right;
   float: left;
 }
 
 #arduinoblock {
+  clear: both;
   float: left;
 }
 
