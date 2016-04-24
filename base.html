@@ -91,6 +91,7 @@
     </table>
     <br>
 
+    <div>
     <div id="protoblock">
     <h2>Protocol file</h2>
       <div class="code" id="proto">
@@ -130,6 +131,58 @@
         {{end}}
       </div>
     </div>
+
+
+    <div id="arduinoblock">
+    <h2>Arduino skeleton file</h2>
+      <div class="code" id="arduino">
+        /*<br>
+        &emsp;&emsp;Define any global variables here/<br>
+        &emsp;&emsp;LED pins, etc.<br>
+        */</br>
+        String input = "";<br>
+        <br>
+        void setup() {<br>
+        &emsp;&emsp;// This baud-rate is expected by the IOC<br>
+        &emsp;&emsp;Serial.begin(115200);<br>
+        &emsp;&emsp;/*<br>
+        &emsp;&emsp;&emsp;&emsp;Write your setup code here<br>
+        &emsp;&emsp;*/<br>
+        }<br>
+        <br>
+        void loop() {<br>
+        &emsp;&emsp;while (Serial.available()>0) {<br>
+        &emsp;&emsp;&emsp;&emsp;char lastRecvd = Serial.read();<br>
+        &emsp;&emsp;&emsp;&emsp;if (lastRecvd == '\n') {<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;switch (input[0]) {<br>
+        {{range .Write}}
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;case '{{.SerialStr}}':<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/*<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Write code here.<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*/<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
+        {{end}}
+        {{range .Read}}
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;case '{{.SerialStr}}':<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/*<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Write code here.<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*/<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
+        {{end}}
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;default:<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}<br>
+        &emsp;&emsp;&emsp;&emsp;}<br>
+        &emsp;&emsp;&emsp;&emsp;else {<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;input += lastRecvd;<br>
+        &emsp;&emsp;&emsp;&emsp;}<br>
+        &emsp;&emsp;}<br>
+        }<br>
+      </div>
+    </div>
+
+    </div>
+
     <div id="footer">
       <div>
         {{template "srccode" .}}
