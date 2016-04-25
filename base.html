@@ -105,15 +105,15 @@
         Terminator = LF;<br><br>
         {{range .Write}}
           set_{{.SigName}} {<br>
-            &emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
-            &emsp;ExtraInput = Ignore;<br>
+            &emsp;&emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
+            &emsp;&emsp;ExtraInput = Ignore;<br>
           }<br>
         {{end}}
         {{range .Read}}
           get_{{.SigName}} {<br>
-          &emsp;out "{{.SerialStr}}";<br>
-          &emsp;in "{{.SerialStr}} {{.DataType}}"<br>
-          &emsp;ExtraInput = Ignore;<br>
+          &emsp;&emsp;out "{{.SerialStr}}";<br>
+          &emsp;&emsp;in "{{.SerialStr}} {{.DataType}}"<br>
+          &emsp;&emsp;ExtraInput = Ignore;<br>
           }<br>
         {{end}}
       </code>
@@ -124,16 +124,16 @@
       <code class="prettyprint">
         {{range .Write}}
           record(ao, {{.SigName}}:set) {<br>
-          &emsp;field(DESC, "{{.SigName}} input")<br>
-          &emsp;field(DTYP, "stream")<br>
-          &emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
+          &emsp;&emsp;field(DESC, "{{.SigName}} input")<br>
+          &emsp;&emsp;field(DTYP, "stream")<br>
+          &emsp;&emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
           }<br>
         {{end}}
         {{range .Read}}
           record(ai, {{.SigName}}:get) {<br>
-          &emsp;field(DESC, "{{.SigName}} output")<br>
-          &emsp;field(DTYP, "stream")<br>
-          &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
+          &emsp;&emsp;field(DESC, "{{.SigName}} output")<br>
+          &emsp;&emsp;field(DTYP, "stream")<br>
+          &emsp;&emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
           }<br>
         {{end}}
       </code>
@@ -143,18 +143,14 @@
     <div id="arduinoblock">
     <h2>Arduino skeleton file</h2>
       <code class="prettyprint">
-        /*<br>
-        &emsp;&emsp;Define any global variables here<br>
-        &emsp;&emsp;LED pins, etc.<br>
-        */</br>
-        String input = ""; \\ For collecting Serial input<br>
+        // Define any global variables here<br>
+        // LED pins, etc.<br>
+        String input = ""; // For collecting Serial input<br>
         <br>
         void setup() {<br>
         &emsp;&emsp;// This baud-rate is expected by the IOC<br>
         &emsp;&emsp;Serial.begin(115200);<br>
-        &emsp;&emsp;/*<br>
-        &emsp;&emsp;&emsp;&emsp;Write your setup code here<br>
-        &emsp;&emsp;*/<br>
+        &emsp;&emsp;// Write your setup code here<br>
         }<br>
         <br>
         void loop() {<br>
@@ -164,19 +160,14 @@
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;switch (input[0]) {<br>
         {{range .Write}}
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;case '{{.SerialStr}}':<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/*<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Write code here.<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*/<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// Write code here.<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
         {{end}}
         {{range .Read}}
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;case '{{.SerialStr}}':<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Serial.print("R ");<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/*<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Write code here.<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Make sure to Serial.print()<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;the expected data<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;*/<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// Write code here.<br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// Make sure to Serial.print() the expected data<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Serial.print("\n");<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;input = "";<br>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
