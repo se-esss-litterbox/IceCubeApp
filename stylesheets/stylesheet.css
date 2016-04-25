@@ -85,19 +85,25 @@ a {
 }
 
 #protoblock {
-  margin-right: 50px;
+  margin-right: 100px;
   clear: left;
   float: left;
+  font-size: 90%;
+  line-height: 100%;
 }
 
 #dbblock {
   clear: right;
   float: left;
+  font-size: 90%;
+  line-height: 100%;
 }
 
 #arduinoblock {
   clear: both;
   float: left;
+  font-size: 90%;
+  line-height: 100%;
 }
 
 ul#menu li {
