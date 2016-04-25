@@ -25,6 +25,7 @@
       {{range .Read}}
       <tr>
         <form action="/createSig" method="post">
+          <input type="hidden" name="key" value="{{.KeyStr}}">
           <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
           <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
           <td>
@@ -48,6 +49,7 @@
       {{range .Write}}
       <tr>
         <form action="/createSig" method="post">
+          <input type="hidden" name="key" value="{{.KeyStr}}">
           <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
           <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
           <td>

@@ -25,8 +25,9 @@ func createReadSig(w http.ResponseWriter, r *http.Request) {
 
 	if r.PostFormValue("updateOrDelete") == "Delete" {
 		var sigs []ReadSig
-		sig := r.FormValue("signame")
-		q := datastore.NewQuery("ReadSig").Filter("SigName =", sig).KeysOnly()
+		//sig := r.FormValue("signame")
+		key := r.FormValue("key")
+		q := datastore.NewQuery("ReadSig").Filter("KeyStr =", key).KeysOnly()
 		keys, _ := q.GetAll(c, sigs)
 		datastore.Delete(c, keys[0])
 		http.Redirect(w, r, "/", http.StatusFound)
@@ -35,8 +36,9 @@ func createReadSig(w http.ResponseWriter, r *http.Request) {
 
 	if r.PostFormValue("updateOrDelete") == "Update" {
 		var sigs []ReadSig
-		sig := r.FormValue("signame")
-		q := datastore.NewQuery("ReadSig").Filter("SigName =", sig).KeysOnly()
+		//sig := r.FormValue("signame")
+		key := r.FormValue("key")
+		q := datastore.NewQuery("ReadSig").Filter("KeyStr =", key).KeysOnly()
 		keys, _ := q.GetAll(c, sigs)
 		datastore.Delete(c, keys[0])
 	}
@@ -53,7 +55,14 @@ func createReadSig(w http.ResponseWriter, r *http.Request) {
 		p.DataType = "%s"
 	}
 	key := datastore.NewIncompleteKey(c, "ReadSig", iceCubeKey(c, u.String()))
-	_, err := datastore.Put(c, key, &p)
+	completeKey, err := datastore.Put(c, key, &p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	p.Key = completeKey
+	p.KeyStr = completeKey.String()
+	_, err = datastore.Put(c, completeKey, &p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -67,8 +76,9 @@ func createWriteSig(w http.ResponseWriter, r *http.Request) {
 
 	if r.PostFormValue("updateOrDelete") == "Delete" {
 		var sigs []WriteSig
-		sig := r.FormValue("signame")
-		q := datastore.NewQuery("WriteSig").Filter("SigName =", sig).KeysOnly()
+		//sig := r.FormValue("signame")
+		key := r.FormValue("key")
+		q := datastore.NewQuery("WriteSig").Filter("KeyStr =", key).KeysOnly()
 		keys, _ := q.GetAll(c, sigs)
 		datastore.Delete(c, keys[0])
 		http.Redirect(w, r, "/", http.StatusFound)
@@ -77,8 +87,9 @@ func createWriteSig(w http.ResponseWriter, r *http.Request) {
 
 	if r.PostFormValue("updateOrDelete") == "Update" {
 		var sigs []WriteSig
-		sig := r.FormValue("signame")
-		q := datastore.NewQuery("WriteSig").Filter("SigName =", sig).KeysOnly()
+		//sig := r.FormValue("signame")
+		key := r.FormValue("key")
+		q := datastore.NewQuery("WriteSig").Filter("KeyStr =", key).KeysOnly()
 		keys, _ := q.GetAll(c, sigs)
 		datastore.Delete(c, keys[0])
 	}
@@ -95,7 +106,14 @@ func createWriteSig(w http.ResponseWriter, r *http.Request) {
 		p.DataType = "%s"
 	}
 	key := datastore.NewIncompleteKey(c, "WriteSig", iceCubeKey(c, u.String()))
-	_, err := datastore.Put(c, key, &p)
+	completeKey, err := datastore.Put(c, key, &p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	p.Key = completeKey
+	p.KeyStr = completeKey.String()
+	_, err = datastore.Put(c, completeKey, &p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

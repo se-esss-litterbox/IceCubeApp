@@ -19,6 +19,8 @@ type ReadSig struct {
 	SigName   string
 	SerialStr string
 	DataType  string
+	Key       *datastore.Key
+	KeyStr    string
 }
 
 // WriteSig is a write signal
@@ -26,6 +28,8 @@ type WriteSig struct {
 	SigName   string
 	SerialStr string
 	DataType  string
+	Key       *datastore.Key
+	KeyStr    string
 }
 
 // Signal contains a bunch of read & write signals
