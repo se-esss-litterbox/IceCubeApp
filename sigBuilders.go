@@ -2,6 +2,7 @@ package icecubeapp
 
 import (
 	"net/http"
+	"time"
 
 	"appengine"
 	"appengine/datastore"
@@ -46,6 +47,7 @@ func createReadSig(w http.ResponseWriter, r *http.Request) {
 	p := ReadSig{
 		SigName:   r.FormValue("signame"),
 		SerialStr: r.FormValue("serialcommand"),
+		When:      time.Now(),
 	}
 	if r.FormValue("sigtype") == "integer" {
 		p.DataType = "%d"
@@ -97,6 +99,7 @@ func createWriteSig(w http.ResponseWriter, r *http.Request) {
 	p := WriteSig{
 		SigName:   r.FormValue("signame"),
 		SerialStr: r.FormValue("serialcommand"),
+		When:      time.Now(),
 	}
 	if r.FormValue("sigtype") == "integer" {
 		p.DataType = "%d"

@@ -17,7 +17,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	baseTempl.Parse(fmt.Sprintf(`{{define "logout"}}<a href="%s">sign out</a><br>{{end}}`, url))
 
 	// Get ReadSigs from the persistent datastore
-	q := datastore.NewQuery("ReadSig").Ancestor(iceCubeKey(c, u.String())).Order("SigName").Limit(10)
+	q := datastore.NewQuery("ReadSig").Ancestor(iceCubeKey(c, u.String())).Order("When").Limit(50)
 	readSigs := make([]ReadSig, 0, 10)
 	if _, err := q.GetAll(c, &readSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -25,7 +25,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get WriteSigs from the persistent datastore
-	q = datastore.NewQuery("WriteSig").Ancestor(iceCubeKey(c, u.String())).Order("SigName").Limit(10)
+	q = datastore.NewQuery("WriteSig").Ancestor(iceCubeKey(c, u.String())).Order("When").Limit(50)
 	writeSigs := make([]WriteSig, 0, 10)
 	if _, err := q.GetAll(c, &writeSigs); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

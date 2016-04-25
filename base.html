@@ -4,6 +4,7 @@
     <title>Ice Cube Dispenser</title>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Titillium+Web">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   </head>
 
   <body>
@@ -26,6 +27,7 @@
       <tr>
         <form action="/createSig" method="post">
           <input type="hidden" name="key" value="{{.KeyStr}}">
+          <input type="hidden" name="rw" value="r">
           <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
           <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
           <td>
@@ -51,6 +53,7 @@
       <tr>
         <form action="/createSig" method="post">
           <input type="hidden" name="key" value="{{.KeyStr}}">
+          <input type="hidden" name="rw" value="w">
           <td><input type="text" name="signame" value="{{.SigName}}" required></input></td>
           <td><input type="text" name="serialcommand" value="{{.SerialStr}}" required></input></td>
           <td>
@@ -98,7 +101,7 @@
     <div>
     <div id="protoblock">
     <h2>Protocol file</h2>
-      <div class="code" id="proto">
+      <code class="prettyprint">
         Terminator = LF;<br><br>
         {{range .Write}}
           set_{{.SigName}} {<br>
@@ -113,12 +116,12 @@
           &emsp;ExtraInput = Ignore;<br>
           }<br>
         {{end}}
-      </div>
+      </code>
     </div>
 
   <div id="dbblock">
     <h2>EPICS DB file</h2>
-      <div class="code" id="db">
+      <code class="prettyprint">
         {{range .Write}}
           record(ao, {{.SigName}}:set) {<br>
           &emsp;field(DESC, "{{.SigName}} input")<br>
@@ -133,13 +136,13 @@
           &emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
           }<br>
         {{end}}
-      </div>
+      </code>
     </div>
 
 
     <div id="arduinoblock">
     <h2>Arduino skeleton file</h2>
-      <div class="code" id="arduino">
+      <code class="prettyprint">
         /*<br>
         &emsp;&emsp;Define any global variables here/<br>
         &emsp;&emsp;LED pins, etc.<br>
@@ -187,7 +190,7 @@
         &emsp;&emsp;&emsp;&emsp;}<br>
         &emsp;&emsp;}<br>
         }<br>
-      </div>
+      </code>
     </div>
 
     </div>

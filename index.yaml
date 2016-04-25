@@ -21,7 +21,29 @@ indexes:
   properties:
   - name: SigName
 
+- kind: ReadSig
+  ancestor: yes
+  properties:
+  - name: When
+
+- kind: ReadSig
+  ancestor: yes
+  properties:
+  - name: When
+    direction: desc
+
 - kind: WriteSig
   ancestor: yes
   properties:
   - name: SigName
+
+- kind: WriteSig
+  ancestor: yes
+  properties:
+  - name: When
+
+- kind: WriteSig
+  ancestor: yes
+  properties:
+  - name: When
+    direction: desc

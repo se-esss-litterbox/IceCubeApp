@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 
 	"appengine"
 	"appengine/datastore"
@@ -21,6 +22,7 @@ type ReadSig struct {
 	DataType  string
 	Key       *datastore.Key
 	KeyStr    string
+	When      time.Time
 }
 
 // WriteSig is a write signal
@@ -30,6 +32,7 @@ type WriteSig struct {
 	DataType  string
 	Key       *datastore.Key
 	KeyStr    string
+	When      time.Time
 }
 
 // Signal contains a bunch of read & write signals
