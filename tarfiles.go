@@ -36,7 +36,7 @@ func tarit(w http.ResponseWriter, r *http.Request) {
 			header.Name = filepath.Join(baseDir, strings.TrimPrefix(path, "files"))
 		}
 
-		if err := tarball.WriteHeader(header); err != nil {
+		if err = tarball.WriteHeader(header); err != nil {
 			return err
 		}
 
