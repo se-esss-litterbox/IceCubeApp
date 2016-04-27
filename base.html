@@ -102,6 +102,7 @@
     <div>
     <div id="protoblock">
     <h2>Protocol file</h2>
+      <div contenteditable="true">
       <code class="prettyprint">
         Terminator = LF;<br><br>
         {{range .Write}}
@@ -118,10 +119,12 @@
           }<br>
         {{end}}
       </code>
+      </div>
     </div>
 
   <div id="dbblock">
     <h2>EPICS DB file</h2>
+      <div contenteditable="true">
       <code class="prettyprint">
         {{range .Write}}
           record(ao, {{.SigName}}:set) {<br>
@@ -138,11 +141,13 @@
           }<br>
         {{end}}
       </code>
+      </div>
     </div>
 
 
     <div id="arduinoblock">
     <h2>Arduino skeleton file</h2>
+      <div contenteditable="true">
       <code class="prettyprint">
         // Define any global variables here<br>
         // LED pins, etc.<br>
@@ -183,6 +188,7 @@
         &emsp;&emsp;}<br>
         }<br>
       </code>
+      </div>
     </div>
 
     </div>
