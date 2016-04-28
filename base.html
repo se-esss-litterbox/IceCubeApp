@@ -103,45 +103,37 @@
     <div id="protoblock">
     <h2>Protocol file</h2>
       <div contenteditable="true">
-      <code class="prettyprint">
-        Terminator = LF;<br><br>
-        {{range .Write}}
-          set_{{.SigName}} {<br>
-            &emsp;&emsp;out "{{.SerialStr}}{{.DataType}}\n";<br>
-            &emsp;&emsp;ExtraInput = Ignore;<br>
-          }<br>
-        {{end}}
-        {{range .Read}}
-          get_{{.SigName}} {<br>
-          &emsp;&emsp;out "{{.SerialStr}}";<br>
-          &emsp;&emsp;in "{{.SerialStr}} {{.DataType}};"<br>
-          &emsp;&emsp;ExtraInput = Ignore;<br>
-          }<br>
-        {{end}}
-      </code>
+      <pre class="prettyprint">
+Terminator = LF;
+{{range .Write}}set_{{.SigName}} {
+  out "{{.SerialStr}}{{.DataType}}\n";
+  ExtraInput = Ignore;
+}
+{{end}}{{range .Read}}
+get_{{.SigName}} {
+  out "{{.SerialStr}}";
+  in "{{.SerialStr}} {{.DataType}};"
+  ExtraInput = Ignore;
+}
+{{end}}</pre>
       </div>
     </div>
 
   <div id="dbblock">
     <h2>EPICS DB file</h2>
       <div contenteditable="true">
-      <code class="prettyprint">
-        {{range .Write}}
-          record(ao, {{.SigName}}:set) {<br>
-          &emsp;&emsp;field(DESC, "{{.SigName}} input")<br>
-          &emsp;&emsp;field(DTYP, "stream")<br>
-          &emsp;&emsp;field(OUT, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
-          }<br>
-        {{end}}
-        {{range .Read}}
-          record(ai, {{.SigName}}:get) {<br>
-          &emsp;&emsp;field(DESC, "{{.SigName}} output")<br>
-          &emsp;&emsp;field(DTYP, "stream")<br>
-          &emsp;&emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
-          &emsp;&emsp;field(SCAN, ".5 second")<br>
-          }<br>
-        {{end}}
-      </code>
+      <pre class="prettyprint">
+{{range .Write}}record(ao, {{.SigName}}:set) {
+  field(DESC, "{{.SigName}} input")
+  field(DTYP, "stream")
+  field(OUT, "@arduino.proto set_{{.SigName}}() $(PORT)")
+}{{end}}
+{{range .Read}}record(ai, {{.SigName}}:get) {
+  field(DESC, "{{.SigName}} output")
+  field(DTYP, "stream")
+  field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")
+  field(SCAN, ".5 second")
+}{{end}}</pre>
       </div>
     </div>
 
@@ -149,46 +141,45 @@
     <div id="arduinoblock">
     <h2>Arduino skeleton file</h2>
       <div contenteditable="true">
-      <code class="prettyprint">
-        // Define any global variables here<br>
-        // LED pins, etc.<br>
-        String input = ""; // For collecting Serial input<br>
-        <br>
-        void setup() {<br>
-        &emsp;&emsp;// This baud-rate is expected by the IOC<br>
-        &emsp;&emsp;Serial.begin(115200);<br>
-        &emsp;&emsp;// Write your setup code here<br>
-        }<br>
-        <br>
-        void loop() {<br>
-        &emsp;&emsp;while (Serial.available()>0) {<br>
-        &emsp;&emsp;&emsp;&emsp;char lastRecvd = Serial.read();<br>
-        &emsp;&emsp;&emsp;&emsp;if (lastRecvd == '\n') {<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;switch (input[0]) {<br>
-        {{range .Write}}
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;case '{{.SerialStr}}':<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// Write code here.<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
-        {{end}}
-        {{range .Read}}
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;case '{{.SerialStr}}':<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Serial.print("R ");<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// Write code here.<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;// Make sure to Serial.print() the expected data<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Serial.print("\n");<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;input = "";<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
-        {{end}}
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;default:<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;break;<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;}<br>
-        &emsp;&emsp;&emsp;&emsp;}<br>
-        &emsp;&emsp;&emsp;&emsp;else {<br>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;input += lastRecvd;<br>
-        &emsp;&emsp;&emsp;&emsp;}<br>
-        &emsp;&emsp;}<br>
-        }<br>
-      </code>
+      <pre class="prettyprint">
+// Define any global variables here
+// LED pins, etc.
+String input = ""; // For collecting Serial input
+
+void setup() {
+  // This baud-rate is expected by the IOC
+  Serial.begin(115200);
+  // Write your setup code here
+}
+
+void loop() {
+  while (Serial.available()>0) {
+    char lastRecvd = Serial.read();
+    if (lastRecvd == '\n') {
+      switch (input[0]) {
+{{range .Write}}
+      case '{{.SerialStr}}':
+        // Write code here.
+        break;
+{{end}}
+{{range .Read}}
+      case '{{.SerialStr}}':
+        Serial.print("R ");
+        // Write code here.
+        // Make sure to Serial.print() the expected data
+        Serial.print("\n");
+        input = "";
+        break;
+{{end}}
+      default:
+        break;
+      }
+    }
+    else {
+      input += lastRecvd;
+    }
+  }
+}</pre>
       </div>
     </div>
 

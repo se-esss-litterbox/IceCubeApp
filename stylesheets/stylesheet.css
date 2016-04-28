@@ -89,21 +89,21 @@ a {
   clear: left;
   float: left;
   font-size: 90%;
-  line-height: 100%;
+  line-height: 110%;
 }
 
 #dbblock {
   clear: right;
   float: left;
   font-size: 90%;
-  line-height: 100%;
+  line-height: 110%;
 }
 
 #arduinoblock {
   clear: both;
   float: left;
   font-size: 90%;
-  line-height: 100%;
+  line-height: 110%;
 }
 
 ul#menu li {
