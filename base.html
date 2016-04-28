@@ -114,7 +114,7 @@
         {{range .Read}}
           get_{{.SigName}} {<br>
           &emsp;&emsp;out "{{.SerialStr}}";<br>
-          &emsp;&emsp;in "{{.SerialStr}} {{.DataType}}"<br>
+          &emsp;&emsp;in "{{.SerialStr}} {{.DataType}};"<br>
           &emsp;&emsp;ExtraInput = Ignore;<br>
           }<br>
         {{end}}
@@ -130,7 +130,7 @@
           record(ao, {{.SigName}}:set) {<br>
           &emsp;&emsp;field(DESC, "{{.SigName}} input")<br>
           &emsp;&emsp;field(DTYP, "stream")<br>
-          &emsp;&emsp;field(INP, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
+          &emsp;&emsp;field(OUT, "@arduino.proto set_{{.SigName}}() $(PORT)")<br>
           }<br>
         {{end}}
         {{range .Read}}
@@ -138,6 +138,7 @@
           &emsp;&emsp;field(DESC, "{{.SigName}} output")<br>
           &emsp;&emsp;field(DTYP, "stream")<br>
           &emsp;&emsp;field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")<br>
+          &emsp;&emsp;field(SCAN, ".5 second")<br>
           }<br>
         {{end}}
       </code>
