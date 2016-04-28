@@ -156,12 +156,10 @@ void loop() {
   while (Serial.available()>0) {
     char lastRecvd = Serial.read();
     if (lastRecvd == '\n') {
-      switch (input[0]) {
-{{range .Write}}
+      switch (input[0]) { {{range .Write}}
       case '{{.SerialStr}}':
         // Write code here.
-        break;
-{{end}}
+        break;{{end}}
 {{range .Read}}
       case '{{.SerialStr}}':
         Serial.print("R ");
