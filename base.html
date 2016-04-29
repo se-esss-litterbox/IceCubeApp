@@ -112,7 +112,7 @@ Terminator = LF;
 {{end}}{{range .Read}}
 get_{{.SigName}} {
   out "{{.SerialStr}}";
-  in "{{.SerialStr}} {{.DataType}};"
+  in "{{.SerialStr}} {{.DataType}}";
   ExtraInput = Ignore;
 }
 {{end}}</pre>
