@@ -20,6 +20,7 @@ var baseTempl = template.Must(template.ParseFiles(
 ))
 var protoTempl = template.Must(template.ParseFiles("protoFile.tmp", "protoTempl.tmp"))
 var dbTempl = template.Must(template.ParseFiles("dbFile.tmp", "dbTempl.tmp"))
+var arduinoTempl = template.Must(template.ParseFiles("arduinoFile.tmp", "arduinoTempl.tmp"))
 
 // ReadSig is a read signal
 type ReadSig struct {
@@ -59,7 +60,38 @@ func init() {
 	http.HandleFunc("/createSig", createSig)
 	http.HandleFunc("/arduino.proto", serveProtoFile)
 	http.HandleFunc("/arduino.db", serveDBFile)
+	http.HandleFunc("/arduino.ino", serveArduinoFile)
 	http.HandleFunc("/download.tar", tarit)
+}
+
+func serveArduinoFile(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	u := user.Current(c)
+
+	// Get ReadSigs from the persistent datastore
+	q := datastore.NewQuery("ReadSig").Ancestor(iceCubeKey(c, u.String())).Order("SigName").Limit(10)
+	readSigs := make([]ReadSig, 0, 10)
+	if _, err := q.GetAll(c, &readSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Get WriteSigs from the persistent datastore
+	q = datastore.NewQuery("WriteSig").Ancestor(iceCubeKey(c, u.String())).Order("SigName").Limit(10)
+	writeSigs := make([]WriteSig, 0, 10)
+	if _, err := q.GetAll(c, &writeSigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	sigs := Signal{
+		Read:  readSigs,
+		Write: writeSigs,
+	}
+
+	if err := arduinoTempl.Execute(w, sigs); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func serveDBFile(w http.ResponseWriter, r *http.Request) {
