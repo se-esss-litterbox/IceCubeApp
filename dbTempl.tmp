@@ -3,8 +3,9 @@
   field(DESC, "{{.SigName}} input")
   field(DTYP, "stream")
   field(OUT, "@arduino.proto set_{{.SigName}}() $(PORT)")
-}{{end}}
-{{range .Read}}record(ai, {{.SigName}}:get) {
+}
+{{end}}{{range .Read}}
+record(ai, {{.SigName}}:get) {
   field(DESC, "{{.SigName}} output")
   field(DTYP, "stream")
   field(INP, "@arduino.proto get_{{.SigName}}() $(PORT)")

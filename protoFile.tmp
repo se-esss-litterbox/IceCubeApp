@@ -1,1 +1,1 @@
-{{template "protofile" .}}
+<pre>{{template "protofile" .}}</pre>
