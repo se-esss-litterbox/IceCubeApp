@@ -11,7 +11,13 @@ import (
 	"appengine/user"
 )
 
-var baseTempl = template.Must(template.ParseFiles("base.html", "srcTempl.html"))
+var baseTempl = template.Must(template.ParseFiles(
+	"base.html",
+	"srcTempl.html",
+	"protoTempl.tmp",
+	"dbTempl.tmp",
+	"arduinoTempl.tmp",
+))
 var protoTempl = template.Must(template.ParseFiles("protoTempl.tmp"))
 var dbTempl = template.Must(template.ParseFiles("dbTempl.tmp"))
 

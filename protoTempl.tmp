@@ -1,20 +1,14 @@
+{{define "protofile"}}
 Terminator = LF;
-
-
-{{range .Write}}
-set_{{.SigName}} {
-    out "{{.SerialStr}}{{.DataType}}\n";
-    ExtraInput = Ignore;
+{{range .Write}}set_{{.SigName}} {
+  out "{{.SerialStr}}{{.DataType}}\n";
+  ExtraInput = Ignore;
 }
-
-
-{{end}}
-{{range .Read}}
+{{end}}{{range .Read}}
 get_{{.SigName}} {
-    out "{{.SerialStr}}";
-    in "{{.SerialStr}} {{.DataType}}"
-    ExtraInput = Ignore;
+  out "{{.SerialStr}}";
+  in "{{.SerialStr}} {{.DataType}}";
+  ExtraInput = Ignore;
 }
-
-
+{{end}}
 {{end}}
