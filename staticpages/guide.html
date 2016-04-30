@@ -40,17 +40,14 @@
       </div>
       <div>
         <h2>Building an IceCube</h2>
-        Start by downloading the empty IceCube IOC.  The link to this is on the
+        Start by making an empty IceCube IOC.  A script to do this for you is on the
         <a id="normallink" href="..">home page</a> of this app, or you can just
-        <a id="normallink" href="/files/iceCubeIOC.tar.gz">click here</a>.  Download
-        that file, and unzip/untar it into some appropriate place.  We recommend
-        putting it in <span class="code">/home/pi/Apps/epics/</span>.
-        <br>
-        <span class="code">tar zxvf iceCubeIOC.tar.gz -C /home/pi/Apps/epics/</span>
-        <br>
-        There are two files missing from the IceCube IOC that you just downloaded,
+        <a id="normallink" href="https://raw.githubusercontent.com/se-esss-litterbox/EPICSpi/master/makeEmptyIceCube.sh">click here</a>.  Download
+        that file, and execute it in the folder you would like the IOC to be installed.  We recommend
+        putting it in <span class="code">/home/pi/Apps/epics/</span>.<br>
+        There are two files missing from the IceCube IOC that you just made,
         and the lack of these will mean that an attempt to compile it will
-        fail.  You need to make two files:
+        fail.  You need to add the following files:
         <ul>
           <li><span class="code">arduino.proto</span> defines the communications
             protocol.</li>
@@ -63,9 +60,9 @@
         according to the values you have provided.  These blocks contain the necessary
         contents of the two missing files.
         <br>
-        Copy the code listed under "Protocol File" into a new file called
-        <span class="code">/home/pi/Apps/epics/iceCubeIOC/iceCubeIOCApp/Db/arduino.proto</span>,
-        and  the code listed under "EPICS DB File" into a new file called
+        Click on the title "Protocol File", and save this into
+        <span class="code">/home/pi/Apps/epics/iceCubeIOC/iceCubeIOCApp/Db/arduino.proto</span>.
+        Then click on the title "EPICS DB File", and save this into 
         <span class="code">/home/pi/Apps/epics/iceCubeIOC/iceCubeIOCApp/Db/arduino.db</span>.
         Note that the naming and location of these files (with respect to
         <span class="code">/home/pi/Apps/epics/iceCubeIOC/</span>) is critical.
