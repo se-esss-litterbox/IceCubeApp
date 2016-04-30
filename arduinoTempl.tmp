@@ -1,5 +1,4 @@
-{{define "arduinofile"}}
-// Define any global variables here
+{{define "arduinofile"}}// Define any global variables here
 // LED pins, etc.
 String input = ""; // For collecting Serial input
 

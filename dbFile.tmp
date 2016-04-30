@@ -1,1 +1,1 @@
-<pre>{{template "dbfile" .}}</pre>
+{{template "dbfile" .}}

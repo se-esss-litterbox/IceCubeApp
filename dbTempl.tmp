@@ -1,5 +1,4 @@
-{{define "dbfile"}}
-{{range .Write}}record(ao, {{.SigName}}:set) {
+{{define "dbfile"}}{{range .Write}}record(ao, {{.SigName}}:set) {
   field(DESC, "{{.SigName}} input")
   field(DTYP, "stream")
   field(OUT, "@arduino.proto set_{{.SigName}}() $(PORT)")
