@@ -16,11 +16,10 @@
         <h2>Assumptions</h2>
         We assume that you have a Raspberry Pi that you would like to use as an
         EPICS IOC to control/monitor a system via a serial port.
-        For the moment, this port is hard-coded as being <span class="code">/dev/ttyACM0</span>,
-        since this is the standard for Arduino systems, however future updates will
-        allow flexibility in this.  To alter the serial port manually, edit the file
+        For the moment, this port is set when creating the empty IOC (defaulting to
+        <span class="code">/dev/ttyUSB0</span>).  To alter the serial port manually, edit the file
         <span class="code">/home/pi/Apps/epics/iceCubeIOC/iocBoot/iociceCubeIOC/st.cmd</span>
-        and alter the reference to <span class="code">/dev/ttyACM0</span>.
+        and alter the reference to <span class="code">/dev/ttyUSB0</span>.
         <br>
         The control functionality offered by this architecture is, from the point
         of view of the EPICS IOC, a state-machine.  That is, the IOC will send
@@ -44,7 +43,10 @@
         <a id="normallink" href="..">home page</a> of this app, or you can just
         <a id="normallink" href="https://raw.githubusercontent.com/se-esss-litterbox/EPICSpi/master/makeEmptyIceCube.sh">click here</a>.  Download
         that file, and execute it in the folder you would like the IOC to be installed.  We recommend
-        putting it in <span class="code">/home/pi/Apps/epics/</span>.<br>
+        putting it in <span class="code">/home/pi/Apps/epics/</span>.  The script
+        accepts a flag, <span class="code">-pPORT</span>, where <span class="code">PORT</span>
+        should be replaced with the serial port that the Arduino is connected to.  This will
+        default to <span class="code">/dev/ttyUSB0</span> if the flag is omitted.<br>
         There are two files missing from the IceCube IOC that you just made,
         and the lack of these will mean that an attempt to compile it will
         fail.  You need to add the following files:
